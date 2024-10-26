@@ -19,8 +19,8 @@ const Orders = () => {
     auth: {
       token: localStorage.getItem('token'), // Assuming token is stored here
     },
-    transports: ['websocket'], // Enforce WebSocket-only transport
-  });
+    transports: ['websocket', 'polling'], // Enable both WebSocket and polling
+  });  
    
 
   useEffect(() => {
