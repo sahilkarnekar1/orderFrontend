@@ -15,7 +15,7 @@ const Orders = () => {
 
   const token = localStorage.getItem('token'); // Get the token from localStorage
 
-  const socket = io('http://localhost:5000', { auth: { token } }); // Connect with auth token
+  const socket = io('https://order-backend-olive.vercel.app/', { auth: { token } }); // Connect with auth token
 
   useEffect(() => {
     socket.on('newOrder', (data) => {
@@ -31,7 +31,7 @@ const Orders = () => {
 
   const fetchOrders = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/orders/shop/orders', {
+      const res = await axios.get('https://order-backend-olive.vercel.app/api/orders/shop/orders', {
         headers: { 'x-auth-token': token },
       });
       setOrders(res.data);
@@ -46,7 +46,7 @@ const Orders = () => {
   const updateOrderStatus = async (orderId, status) => {
     try {
       console.log(orderId, status);
-      await axios.patch(`http://localhost:5000/api/orders/order/${orderId}/${status}`, {}, {
+      await axios.patch(`https://order-backend-olive.vercel.app/api/orders/order/${orderId}/${status}`, {}, {
         headers: { 'x-auth-token': token },
       });
       fetchOrders(); // Refetch the orders after status update
