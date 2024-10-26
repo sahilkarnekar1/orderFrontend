@@ -17,11 +17,11 @@ const Orders = () => {
 
   const socket = io('https://order-backend-olive.vercel.app', {
     auth: {
-      token: localStorage.getItem('token'), // Replace with your token logic
+      token: localStorage.getItem('token'), // Assuming token is stored here
     },
-    transports: ['websocket'],
+    transports: ['websocket'], // Enforce WebSocket-only transport
   });
-  
+   
 
   useEffect(() => {
     socket.on('newOrder', (data) => {
