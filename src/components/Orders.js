@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Modal from 'react-modal'; // Import Modal
 import '../styling/Orders.css'; // Import the CSS file for styling
+import io from 'socket.io-client';
 
 Modal.setAppElement('#root'); // Setting root for accessibility
 
@@ -14,19 +15,30 @@ const Orders = () => {
 
   const token = localStorage.getItem('token'); // Get the token from localStorage
 
-  // Function to fetch orders
+  const socket = io('https://order-backend-olive.vercel.app', { auth: { token } }); // Connect with auth token
+
+  useEffect(() => {
+    socket.on('newOrder', (data) => {
+      console.log('New order notification:', data);
+     
+      fetchOrders(); // Refetch orders on new order
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [socket]);
+
   const fetchOrders = async () => {
     try {
       const res = await axios.get('https://order-backend-olive.vercel.app/api/orders/shop/orders', {
-        headers: {
-          'x-auth-token': token, // Pass the authentication token
-        },
+        headers: { 'x-auth-token': token },
       });
-      setOrders(res.data); // Store the orders in state
-      setLoading(false); // Set loading to false
+      setOrders(res.data);
+      setLoading(false);
     } catch (err) {
-      setError('Error fetching orders. Please try again.'+err);
-      setLoading(false); // Set loading to false even in case of error
+      setError(`Error fetching orders. Please try again. ${err}`);
+      setLoading(false);
     }
   };
 
