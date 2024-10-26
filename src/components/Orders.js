@@ -17,10 +17,17 @@ const Orders = () => {
 
   const socket = io('https://order-backend-olive.vercel.app', {
     auth: {
-      token: localStorage.getItem('token'), // Assuming token is stored here
+      token: localStorage.getItem('token'),
     },
-    transports: ['websocket', 'polling'], // Enable both WebSocket and polling
-  });  
+    transports: ['websocket', 'polling'],
+    upgrade: false, // Prevents automatic upgrading from polling to WebSocket
+    transportOptions: {
+      polling: {
+        interval: 1000, // Polling interval in milliseconds
+      },
+    },
+  });
+   
    
 
   useEffect(() => {
