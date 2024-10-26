@@ -15,7 +15,13 @@ const Orders = () => {
 
   const token = localStorage.getItem('token'); // Get the token from localStorage
 
-  const socket = io('https://order-backend-olive.vercel.app', { auth: { token } }); // Connect with auth token
+  const socket = io('https://order-backend-olive.vercel.app', {
+    auth: {
+      token: localStorage.getItem('token'), // Replace with your token logic
+    },
+    transports: ['websocket'],
+  });
+  
 
   useEffect(() => {
     socket.on('newOrder', (data) => {
