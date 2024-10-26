@@ -21,7 +21,8 @@ const Orders = () => {
     socket.on('newOrder', (data) => {
       console.log('New order notification:', data);
      
-      fetchOrders(); // Refetch orders on new order
+      setOrders(prevOrders => [data.order, ...prevOrders]);
+
     });
 
     return () => {
@@ -87,8 +88,9 @@ const Orders = () => {
     <div>
       <h2>Orders</h2>
       {orders.length > 0 ? (
-        orders.map((order) => (
+        orders.map((order,index) => (
           <div key={order._id} className="order-card">
+            <h2>{index}</h2>
             <h3>Order ID: {order._id}</h3>
             <p>Status: <button onClick={() => openModal(order)}>{order.status}</button></p>
             <p>Total Price: RS: {order.totalPrice.toFixed(2)}</p>
